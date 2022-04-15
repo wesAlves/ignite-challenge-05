@@ -27,11 +27,15 @@ export class GamesRepository implements IGamesRepository {
   }
 
   async findUsersByGameId(id: string): Promise<User[]> {
-    return this.repository
-      .createQueryBuilder()
-      .from(User, "user")
-      .select("user")
-      .getMany();
-    // Complete usando query builder
+    const gamesRepositor = this.repository;
+
+    const getSomething = await gamesRepositor.find({
+      relations: ["users"],
+      where: { id: id },
+    });
+
+    console.log(getSomething[0].users);
+
+    return getSomething[0].users;
   }
 }
